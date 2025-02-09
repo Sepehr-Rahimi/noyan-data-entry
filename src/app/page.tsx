@@ -1,101 +1,201 @@
-import Image from "next/image";
+"use client";
+
+// pages/index.tsx
+import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import axios from "axios";
+
+type FormData = {
+  fullName: string;
+  phone1: string;
+  phone2: string;
+  address: string;
+  projectUsage: string;
+  projectStage: string;
+  importance: string;
+  description: string;
+  sendSMS: boolean;
+};
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isLoading },
+  } = useForm<FormData>({
+    defaultValues: {
+      sendSMS: true,
+    },
+  });
+  const [message, setMessage] = useState<{ message: string; isError: boolean }>(
+    {
+      message: "",
+      isError: false,
+    }
+  );
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      const response = await axios.post("/api/saveToExcel", data);
+      if (response.status === 200) {
+        setMessage({ message: response.data.message, isError: false });
+        reset(); // Clears the form after successful submission
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.log(error);
+
+      setMessage({
+        isError: true,
+        message: error.response.data.message || "Error",
+      });
+      return error;
+    }
+  };
+
+  return (
+    <div className="flex justify-center items-center bg-gray-100">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-white p-6 rounded shadow-md w-full max-w-md"
+      >
+        <h1 className="text-2xl font-bold mb-4">Enter Project Data</h1>
+
+        {/* Other form fields remain the same... */}
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            نام و نام خانوادگی
+          </label>
+          <input
+            type="text"
+            {...register("fullName", { required: "This field is required" })}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+          />
+          {errors.fullName && (
+            <p className="text-red-500 text-sm">{errors.fullName.message}</p>
+          )}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            تلفن 1
+          </label>
+          <input
+            type="text"
+            {...register("phone1", { required: "This field is required" })}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          {errors.phone1 && (
+            <p className="text-red-500 text-sm">{errors.phone1.message}</p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            تلفن 2
+          </label>
+          <input
+            type="text"
+            {...register("phone2")}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            آدرس
+          </label>
+          <input
+            type="text"
+            {...register("address", {})}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          {errors.address && (
+            <p className="text-red-500 text-sm">{errors.address.message}</p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            کاربری پروژه
+          </label>
+          <div className="flex gap-4">
+            {["ویلایی", "مسکونی", "تجاری", "اداری", "سایر"].map((option) => (
+              <label key={option} className="flex items-center">
+                <input
+                  type="radio"
+                  value={option}
+                  {...register("projectUsage", {})}
+                  className="mr-2"
+                />
+                {option}
+              </label>
+            ))}
+          </div>
+          {errors.projectUsage && (
+            <p className="text-red-500 text-sm">
+              {errors.projectUsage.message}
+            </p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            مرحله پروژه
+          </label>
+          <input
+            type="text"
+            {...register("projectStage")}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            اهمیت
+          </label>
+          <input
+            type="text"
+            {...register("importance")}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            توضیحات
+          </label>
+          <textarea
+            {...register("description")}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+          />
+        </div>
+
+        <div className="mb-4 flex items-center">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            ارسال پیامک
+          </label>
+          <input type="checkbox" {...register("sendSMS")} className="mr-2" />
+        </div>
+
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          disabled={isLoading}
+        >
+          {isLoading ? "Loading" : "Submit"}
+        </button>
+        {message.message && (
+          <p
+            className={`mt-4 ${
+              message.isError ? "text-red-500" : "text-green-500"
+            }`}
+          >
+            {message.message}
+          </p>
+        )}
+      </form>
     </div>
   );
 }
