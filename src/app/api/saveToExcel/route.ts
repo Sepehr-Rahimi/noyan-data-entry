@@ -57,10 +57,10 @@ export async function POST(req: Request) {
     XLSX.writeFile(workbook, filePath);
 
     const text = `
-⭐ بیست و پنجمین نمایشگاه بین المللی ساختمان  
-🏗️ سرویس 360 ارایه دهنده راهکار های مدیریت پروژه های برق و جریان ضعیف ساختمان  
-📞 09928377982
-// `;
+    ⭐ بیست و پنجمین نمایشگاه بین المللی ساختمان
+    🏗️ سرویس 360 ارایه دهنده راهکار های مدیریت پروژه های برق و جریان ضعیف ساختمان
+    📞 09928377982
+    // `;
     const res = await axios.post(
       "https://rest.payamak-panel.com/api/SendSMS/SendSMS",
       {
@@ -73,6 +73,8 @@ export async function POST(req: Request) {
     );
 
     console.log(res);
+    if (res.data?.StrRetStatus !== "Ok")
+      return NextResponse.json({ message: "پیام ارسال نشد" }, { status: 400 });
 
     return NextResponse.json(
       { message: "با موفقیت انجام شد" },

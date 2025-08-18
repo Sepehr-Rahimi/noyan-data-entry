@@ -22,7 +22,7 @@ export default function Home() {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isLoading },
+    formState: { errors },
   } = useForm<FormData>();
   //   {
   //   defaultValues: {
@@ -35,8 +35,12 @@ export default function Home() {
       isError: false,
     }
   );
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    setLoading(true);
+    setMessage({ message: "", isError: false });
+
     try {
       const response = await axios.post("/api/saveToExcel", data);
       if (response.status === 200) {
@@ -53,6 +57,7 @@ export default function Home() {
       });
       return error;
     }
+    setLoading(false);
   };
 
   return (
@@ -199,10 +204,10 @@ export default function Home() {
 
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          disabled={isLoading}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-blue-300"
+          disabled={!!loading}
         >
-          {isLoading ? "Loading" : "Submit"}
+          {loading ? "Loading" : "Submit"}
         </button>
         {message.message && (
           <p
