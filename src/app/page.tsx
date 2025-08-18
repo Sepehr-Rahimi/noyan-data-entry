@@ -23,11 +23,12 @@ export default function Home() {
     handleSubmit,
     reset,
     formState: { errors, isLoading },
-  } = useForm<FormData>({
-    defaultValues: {
-      sendSMS: true,
-    },
-  });
+  } = useForm<FormData>();
+  //   {
+  //   defaultValues: {
+  //     sendSMS: true,
+  //   },
+  // }
   const [message, setMessage] = useState<{ message: string; isError: boolean }>(
     {
       message: "",

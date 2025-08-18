@@ -72,7 +72,7 @@ export async function POST(req: Request) {
       }
     );
 
-    // console.log(res);
+    console.log(res);
 
     return NextResponse.json(
       { message: "با موفقیت انجام شد" },
