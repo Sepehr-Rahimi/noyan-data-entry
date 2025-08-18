@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import axios from "axios";
 
 // Define the path for the Excel file (change this path as needed)
-const filePath = "src/data.xlsx";
+const filePath = "public/data.xlsx";
 // Handle POST requests
 export async function POST(req: Request) {
   // Parse the incoming JSON data
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
 ⭐ بیست و پنجمین نمایشگاه بین المللی ساختمان  
 🏗️ سرویس 360 ارایه دهنده راهکار های مدیریت پروژه های برق و جریان ضعیف ساختمان  
 📞 09928377982
-`;
+// `;
     const res = await axios.post(
       "https://rest.payamak-panel.com/api/SendSMS/SendSMS",
       {
