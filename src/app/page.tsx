@@ -8,13 +8,13 @@ import axios from "axios";
 type FormData = {
   fullName: string;
   phone1: string;
-  phone2: string;
-  address: string;
-  projectUsage: string;
-  projectStage: string;
-  importance: string;
-  description: string;
-  sendSMS: boolean;
+  companyName: string;
+  role: string;
+  // projectUsage: string;
+  // projectStage: string;
+  // importance: string;
+  // description: string;
+  // sendSMS: boolean;
 };
 
 export default function Home() {
@@ -55,10 +55,10 @@ export default function Home() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-gray-100">
+    <div className="flex justify-center items-center bg-gray-100 h-[100vh]">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-6 rounded shadow-md w-full max-w-md"
+        className="bg-white p-6 rounded shadow-md w-full max-w-md "
       >
         <h1 className="text-2xl font-bold mb-4">Enter Project Data</h1>
 
@@ -93,16 +93,33 @@ export default function Home() {
 
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            تلفن 2
+            نام شرکت
           </label>
           <input
             type="text"
-            {...register("phone2")}
+            {...register("companyName", { required: "this field is required" })}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
           />
+          {errors.companyName && (
+            <p className="text-red-500 text-sm">{errors.companyName.message}</p>
+          )}
         </div>
 
         <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            سمت
+          </label>
+          <input
+            type="text"
+            {...register("role", { required: "this field is required" })}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+          />
+          {errors.role && (
+            <p className="text-red-500 text-sm">{errors.role.message}</p>
+          )}
+        </div>
+
+        {/* <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             آدرس
           </label>
@@ -114,9 +131,9 @@ export default function Home() {
           {errors.address && (
             <p className="text-red-500 text-sm">{errors.address.message}</p>
           )}
-        </div>
+        </div> */}
 
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             کاربری پروژه
           </label>
@@ -170,14 +187,14 @@ export default function Home() {
             {...register("description")}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
           />
-        </div>
+        </div> */}
 
-        <div className="mb-4 flex items-center">
+        {/* <div className="mb-4 flex items-center">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             ارسال پیامک
           </label>
           <input type="checkbox" {...register("sendSMS")} className="mr-2" />
-        </div>
+        </div> */}
 
         <button
           type="submit"
