@@ -5,13 +5,14 @@ import { NextResponse } from "next/server";
 import axios from "axios";
 
 // Define the path for the Excel file (change this path as needed)
-const filePath = "src/noyan.xlsx";
+const filePath = "public/noyan.xlsx";
 // Handle POST requests
 export async function POST(req: Request) {
   // Parse the incoming JSON data
   const {
     fullName,
     phone1,
+    phone2,
     companyName,
     role,
     projectUsage,
@@ -43,12 +44,14 @@ export async function POST(req: Request) {
     data.push({
       "نام و نام خانوادگی": fullName,
       "تلفن 1": phone1,
+      "تلفن 2": phone2,
       "نام شرکت": companyName,
       سمت: role,
       "کاربری پروژه": projectUsage,
       "مرحله پروژه": projectStage,
       اهمیت: importance,
       توضیحات: description,
+      تاریخ: new Date().toLocaleString("fa-IR"),
     });
 
     // Create a new worksheet and write data to it
@@ -56,21 +59,15 @@ export async function POST(req: Request) {
     workbook.Sheets["Sheet1"] = newWorksheet;
     XLSX.writeFile(workbook, filePath);
 
-    const text = `
-⭐ بیست و پنجمین نمایشگاه بین المللی ساختمان  
-🏗️ سرویس 360 ارایه دهنده راهکار های مدیریت پروژه های برق و جریان ضعیف ساختمان  
-📞 09928377982
-`;
-    const res = await axios.post(
-      "https://rest.payamak-panel.com/api/SendSMS/SendSMS",
-      {
-        username: "09121725326",
-        password: "31#R2",
-        to: phone1,
-        text,
-        from: "50002710025336",
-      }
-    );
+    // const text = ``;
+    // axios.get("https://api.sms-webservice.com/api/V3/Send", {
+    //   params: {
+    //     apikey: "268670-54078D3F79B6418286FBA75B07990916",
+    //     text,
+    //     sender: "9999181557",
+    //     Recipients: phone1,
+    //   },
+    // });
 
     // console.log(res);
 

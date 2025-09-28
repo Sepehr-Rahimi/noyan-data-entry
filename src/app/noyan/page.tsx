@@ -8,12 +8,14 @@ import axios from "axios";
 type FormData = {
   fullName: string;
   phone1: string;
+  phone2: string;
   companyName: string;
   role: string;
-  // projectUsage: string;
-  // projectStage: string;
-  // importance: string;
-  // description: string;
+  projectUsage: string;
+  projectStage: string;
+  importance: string;
+  description: string;
+  address: string;
   // sendSMS: boolean;
 };
 
@@ -24,9 +26,7 @@ export default function Home() {
     reset,
     formState: { errors, isLoading },
   } = useForm<FormData>({
-    defaultValues: {
-      sendSMS: true,
-    },
+    defaultValues: {},
   });
   const [message, setMessage] = useState<{ message: string; isError: boolean }>(
     {
@@ -37,7 +37,7 @@ export default function Home() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const response = await axios.post("/api/saveToExcel", data);
+      const response = await axios.post("/api/saveToExcel/noyan", data);
       if (response.status === 200) {
         setMessage({ message: response.data.message, isError: false });
         reset(); // Clears the form after successful submission
@@ -90,8 +90,21 @@ export default function Home() {
             <p className="text-red-500 text-sm">{errors.phone1.message}</p>
           )}
         </div>
-
         <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            تلفن 2
+          </label>
+          <input
+            type="text"
+            {...register("phone2")}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+          />
+          {errors.phone2 && (
+            <p className="text-red-500 text-sm">{errors.phone2.message}</p>
+          )}
+        </div>
+
+        {/* <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             نام شرکت
           </label>
@@ -103,9 +116,9 @@ export default function Home() {
           {errors.companyName && (
             <p className="text-red-500 text-sm">{errors.companyName.message}</p>
           )}
-        </div>
+        </div> */}
 
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             سمت
           </label>
@@ -117,9 +130,9 @@ export default function Home() {
           {errors.role && (
             <p className="text-red-500 text-sm">{errors.role.message}</p>
           )}
-        </div>
+        </div> */}
 
-        {/* <div className="mb-4">
+        <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             آدرس
           </label>
@@ -131,9 +144,9 @@ export default function Home() {
           {errors.address && (
             <p className="text-red-500 text-sm">{errors.address.message}</p>
           )}
-        </div> */}
+        </div>
 
-        {/* <div className="mb-4">
+        <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             کاربری پروژه
           </label>
@@ -187,7 +200,7 @@ export default function Home() {
             {...register("description")}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
           />
-        </div> */}
+        </div>
 
         {/* <div className="mb-4 flex items-center">
           <label className="block text-gray-700 text-sm font-bold mb-2">

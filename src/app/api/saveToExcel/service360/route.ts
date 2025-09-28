@@ -61,16 +61,13 @@ export async function POST(req: Request) {
 🏗️ سرویس 360 ارایه دهنده راهکار های مدیریت پروژه های برق و جریان ضعیف ساختمان  
 📞 09928377982
 `;
-    const res = await axios.post(
-      "https://rest.payamak-panel.com/api/SendSMS/SendSMS",
-      {
-        username: "09121725326",
-        password: "31#R2",
-        to: phone1,
-        text,
-        from: "50002710025336",
-      }
-    );
+    await axios.post("https://rest.payamak-panel.com/api/SendSMS/SendSMS", {
+      username: "09121725326",
+      password: "31#R2",
+      to: phone1,
+      text,
+      from: "50002710025336",
+    });
 
     // console.log(res);
 
