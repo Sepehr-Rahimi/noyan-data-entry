@@ -2,7 +2,7 @@
 import * as XLSX from "xlsx";
 import * as fs from "fs";
 import { NextResponse } from "next/server";
-import axios from "axios";
+// import axios from "axios";
 
 // Define the path for the Excel file (change this path as needed)
 const filePath = "public/noyan.xlsx";
