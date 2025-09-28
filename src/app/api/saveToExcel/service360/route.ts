@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import axios from "axios";
 
 // Define the path for the Excel file (change this path as needed)
-const filePath = "public/data.xlsx";
+const filePath = "public/service360.xlsx";
 // Handle POST requests
 export async function POST(req: Request) {
   // Parse the incoming JSON data
@@ -45,6 +45,7 @@ export async function POST(req: Request) {
       "تلفن 1": phone1,
       "نام شرکت": companyName,
       سمت: role,
+      تاریخ: new Date().toLocaleString("fa-IR"),
       // "کاربری پروژه": projectUsage,
       // "مرحله پروژه": projectStage,
       // اهمیت: importance,
@@ -72,7 +73,7 @@ export async function POST(req: Request) {
       }
     );
 
-    console.log(res);
+    // console.log(res);
     if (res.data?.StrRetStatus !== "Ok")
       return NextResponse.json({ message: "پیام ارسال نشد" }, { status: 400 });
 

@@ -42,7 +42,7 @@ export default function Home() {
     setMessage({ message: "", isError: false });
 
     try {
-      const response = await axios.post("/api/saveToExcel", data);
+      const response = await axios.post("/api/saveToExcel/service360", data);
       if (response.status === 200) {
         setMessage({ message: response.data.message, isError: false });
         reset(); // Clears the form after successful submission
