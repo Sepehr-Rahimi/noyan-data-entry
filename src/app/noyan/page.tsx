@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import { Header } from "@/components/header";
 
 type FormData = {
   fullName: string;
@@ -55,12 +56,14 @@ export default function Home() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-gray-100 h-[100vh]">
+    <div className="flex justify-center bg-gray-100 ">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-6 rounded shadow-md w-full max-w-md "
       >
-        <h1 className="text-2xl font-bold mb-4">Enter Project Data</h1>
+        <Header pageTitle="فرم ثبت اطلاعات" />
+
+        {/* <h1 className="text-2xl font-bold mb-4">فرم ثبت اطلاعات</h1> */}
 
         {/* Other form fields remain the same... */}
         <div className="mb-4">
@@ -214,7 +217,7 @@ export default function Home() {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           disabled={isLoading}
         >
-          {isLoading ? "Loading" : "Submit"}
+          {isLoading ? "در حال ثبت ..." : "ثبت"}
         </button>
         {message.message && (
           <p
