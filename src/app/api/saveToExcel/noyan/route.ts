@@ -2,6 +2,8 @@
 import * as XLSX from "xlsx";
 import * as fs from "fs";
 import { NextResponse } from "next/server";
+import axios from "axios";
+import { toEnglishDigits } from "@/utils/utils";
 // import axios from "axios";
 
 // Define the path for the Excel file (change this path as needed)
@@ -59,15 +61,21 @@ export async function POST(req: Request) {
     workbook.Sheets["Sheet1"] = newWorksheet;
     XLSX.writeFile(workbook, filePath);
 
-    // const text = ``;
-    // axios.get("https://api.sms-webservice.com/api/V3/Send", {
-    //   params: {
-    //     apikey: "268670-54078D3F79B6418286FBA75B07990916",
-    //     text,
-    //     sender: "9999181557",
-    //     Recipients: phone1,
-    //   },
-    // });
+    const text = `از حضور ارزشمندتان در غرفه نویان در نمایشگاه ترمه صمیمانه سپاسگزاریم.
+دیدار شما مایه افتخار ما بود و امیدواریم این آشنایی سرآغاز همکاری‌های ثمربخش باشد. 🌐✨
+
+راه‌های ارتباط با ما:
+09198257009
+www.smartnoyan.com
+Instagram: smartnoyan`;
+    axios.get("https://api.sms-webservice.com/api/V3/Send", {
+      params: {
+        apikey: "268670-54078D3F79B6418286FBA75B07990916",
+        text,
+        sender: "9999181557",
+        Recipients: toEnglishDigits(phone1),
+      },
+    });
 
     // console.log(res);
 
