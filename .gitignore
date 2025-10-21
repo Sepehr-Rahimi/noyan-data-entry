@@ -43,3 +43,4 @@ next-env.d.ts
 # exel
 /public/noyan.xslx
 /public/service360.xslx
+/public/data.xslx
