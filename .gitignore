@@ -41,4 +41,5 @@ yarn-error.log*
 next-env.d.ts
 
 # exel
-/public/*.xslx
+/public/noyan.xslx
+/public/service360.xslx
